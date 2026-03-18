@@ -20,7 +20,7 @@ param(
     [string]$OutputDir = $null
 )
 
-# Si no se especifica OutputDir, usa AssetDir
+# Si no se especifica OutputDir, usa el mismo AssetDir (para backward compatibility)
 if (-not $OutputDir) { $OutputDir = $AssetDir }
 
 # ============================================================================

@@ -7,72 +7,82 @@ Este directorio contiene los assets visuales para WezTerm y los scripts para ges
 ```
 assets/
 ├── generators/
-│   ├── setup-assets.ps1      # Script de setup e instalación
-│   └── generate-patterns.ps1 # Generador de patrones parallax
+│   ├── setup-assets.ps1       # Script de setup e instalación
+│   └── generate-patterns.ps1  # Generador de patrones parallax
 │
-└── source/
-    ├── WallpaperGemini.png         # Wallpaper base (5.58 MB)
-    ├── Astronauta.png              # Sticker (3.75 MB)
-    ├── Luna.png                    # Sticker (3.59 MB)
-    ├── Nave.png                    # Sticker (2.93 MB)
-    ├── Galaxia.png                 # Sticker (4.66 MB)
-    ├── Patron_Espacio_Peque.png    # Patrón generado (0.34 MB)
-    └── Patron_Espacio_Mediano.png  # Patrón generado (0.83 MB)
+├── sources/                   # Stickers de entrada (para generar patrones)
+│   ├── Astronauta.png
+│   ├── Luna.png
+│   ├── Nave.png
+│   └── Galaxia.png
+│
+└── generated/                 # Patrones generados (lo que se usa en config)
+    ├── WallpaperGemini.png    # Wallpaper base
+    ├── Patron_Espacio_Peque.png       # Patrón generado
+    └── Patron_Espacio_Mediano.png     # Patrón generado
 ```
 
 ## 📝 Descripción de Assets
 
-### Wallpapers
+### Flujo de Assets
+
+```
+sources/ (Entrada)                    generated/ (Salida)
+├─ Astronauta.png                    ├─ Patron_Espacio_Peque.png
+├─ Luna.png              ──────>      ├─ Patron_Espacio_Mediano.png
+├─ Nave.png         [Generador]       └─ WallpaperGemini.png (manual)
+└─ Galaxia.png
+                                      ~/.wezterm_assets/ (Copia final)
+```
+
+### Sources (Stickers para generar patrones)
+
+### Sources (Stickers para generar patrones)
+
+Los stickers son elementos visuales que se combinan con el generador para crear patrones únicos.
+
+- **Astronauta.png** (3.75 MB)
+  - Figura de astronauta con traje espacial
+  - Solo se usa en la generación de patrones
+
+- **Luna.png** (3.59 MB)
+  - Elemento lunar
+  - Solo se usa en la generación de patrones
+
+- **Nave.png** (2.93 MB)
+  - Nave espacial
+  - Solo se usa en la generación de patrones
+
+- **Galaxia.png** (4.66 MB)
+  - Elemento de galaxia
+  - Solo se usa en la generación de patrones
+
+### Generated (Patrones y Wallpaper - Lo que se usa en la config)
 
 - **WallpaperGemini.png** (5.58 MB)
   - Wallpaper base de alta resolución
   - Tema: Gemini con gradientes y elementos espaciales
   - Usado como capa 1 de fondo con opacidad muy baja (0.02)
   - Efecto: Fondo estático y sutil
-
-### Stickers
-
-Los stickers son elementos visuales que se combinan para generar los patrones.
-
-- **Astronauta.png** (3.75 MB)
-  - Figura de astronauta con traje espacial
-  - Usado en los patrones parallax
-
-- **Luna.png** (3.59 MB)
-  - Elemento lunar
-  - Usado en los patrones parallax
-
-- **Nave.png** (2.93 MB)
-  - Nave espacial
-  - Usado en los patrones parallax
-
-- **Galaxia.png** (4.66 MB)
-  - Elemento de galaxia
-  - Usado en los patrones parallax
-
-### Patrones Generados
-
-Los patrones se generan automáticamente combinando los stickers con un algoritmo que:
-- Distribuye elementos en una grilla
-- Evita repeticiones adyacentes
-- Aplica desfase (stagger) para efecto natural
-- Añade jitter aleatorio para mayor variedad
+  - ⚠️ **Importante**: Este es un wallpaper manual, NO se regenera automáticamente
 
 - **Patron_Espacio_Peque.png** (0.34 MB)
   - Grid: 3 columnas × 4 filas
   - Tamaño de stickers: 100-150 px
   - Efecto: Fondo lejano (Parallax = 0.2)
+  - ✅ Se regenera automáticamente con generate-patterns.ps1
 
 - **Patron_Espacio_Mediano.png** (0.83 MB)
   - Grid: 3 columnas × 3 filas
   - Tamaño de stickers: 200-300 px
   - Efecto: Fondo cercano (Parallax = 2.0)
+  - ✅ Se regenera automáticamente con generate-patterns.ps1
 
 ## 🔧 Scripts de Setup
 
 ### setup-assets.ps1
 
-**Propósito**: Copiar assets del repo al directorio de configuración del usuario.
+**Propósito**: Copiar assets necesarios del repo al directorio de configuración del usuario.
 
 **Uso básico**:
 ```powershell
@@ -85,14 +95,19 @@ Los patrones se generan automáticamente combinando los stickers con un algoritm
 ```
 
 **Ubicaciones**:
-- **Origen**: `assets/source/`
+- **Origen (patrones generados)**: `assets/generated/`
+- **Origen (stickers para generar)**: `assets/sources/`
 - **Destino**: `~/.wezterm_assets/` (Windows) o `~/.wezterm_assets/` (macOS/Linux)
 
 **Características**:
 - ✅ Crea automáticamente el directorio destino si no existe
-- ✅ Copia todos los assets con sobreescritura
-- ✅ Opcionalmente regenera los patrones parallax
-- ✅ Valida ImageMagick (si se regeneran patrones)
+- ✅ Copia SOLO los archivos necesarios para la config:
+  - WallpaperGemini.png (wallpaper base)
+  - Patron_Espacio_Peque.png (patrón generado)
+  - Patron_Espacio_Mediano.png (patrón generado)
+- ✅ NO copia stickers (solo necesarios para regenerar)
+- ✅ Opcionalmente regenera patrones si usas `-GeneratePatterns`
+- ✅ Valida que existan los archivos necesarios
 
 ### generate-patterns.ps1
 
