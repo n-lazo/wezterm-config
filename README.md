@@ -16,37 +16,46 @@ Una configuración moderna y versatil de **WezTerm** con tema visual "Gemini", r
 - **WezTerm** 0.15+ ([descargar](https://wezfurlong.org/wezterm/))
 - **Git LFS** ([descargar](https://git-lfs.com/))
 - **ImageMagick** (solo para regenerar patrones)
-- **PowerShell 7+** (para scripts de setup)
+- **PowerShell 5.0+** (Windows) O **Bash 4.0+** (Linux/macOS)
 
 ## 🚀 Instalación Rápida
 
-### 1. Clonar el repositorio
-
-```bash
-git clone <tu-repo> ~/.wezterm-config
-cd ~/.wezterm-config
-```
-
-### 2. Setup de assets
+### Para Windows (PowerShell)
 
 ```powershell
-cd assets/generators
-.\setup-assets.ps1
+# 1. Clonar el repositorio
+git clone https://github.com/n-lazo/wezterm-config.git
+cd wezterm-config
+
+# 2. Setup automático (copia assets y config)
+.\assets\generators\setup-assets.ps1
+
+# 3. Recarga WezTerm (Ctrl+Shift+R)
 ```
 
-Esto copia todos los assets a `~/.wezterm_assets`.
-
-### 3. Copiar configuración
+### Para Linux / macOS (Bash)
 
 ```bash
-# Windows
-Copy-Item wezterm.lua $env:USERPROFILE\.wezterm.lua
+# 1. Clonar el repositorio
+git clone https://github.com/n-lazo/wezterm-config.git
+cd wezterm-config
 
-# macOS/Linux
-cp wezterm.lua ~/.wezterm.lua
+# 2. Hacer ejecutables los scripts
+chmod +x assets/generators/*.sh
+
+# 3. Setup automático (copia assets y config)
+./assets/generators/setup-assets.sh
+
+# 4. Recarga WezTerm
 ```
 
-### 4. Recarga WezTerm
+### 📍 Archivos instalados
+
+Ambos scripts copian automáticamente:
+- Assets a: `~/.wezterm_assets/` (6.75 MB)
+- Config a: `~/.wezterm.lua`
+
+Luego simplemente recarga WezTerm (Ctrl+Shift+R)
 
 ```
 Ctrl+Shift+R  # Reload config
@@ -56,24 +65,29 @@ Ctrl+Shift+R  # Reload config
 
 ```
 wezterm-config/
-├── .gitattributes              # Configuración de Git LFS
-├── .gitignore                  # Archivos a ignorar
-├── README.md                   # Este archivo
-├── SETUP.md                    # Guía detallada de instalación
-├── wezterm.lua                 # Configuración principal
+├── .gitattributes                 # Configuración de Git LFS
+├── .gitignore                     # Archivos a ignorar
+├── README.md                      # Este archivo
+├── SETUP.md                       # Guía detallada de instalación
+├── MULTIPLATFORM.md               # Soporte Windows/Linux/macOS
+├── wezterm.lua                    # Configuración principal
 │
 └── assets/
     ├── generators/
-    │   ├── setup-assets.ps1    # Script de setup
-    │   ├── generate-patterns.ps1 # Generador de patrones
-    │   └── README.md           # Documentación técnica
+    │   ├── setup-assets.ps1       # Script de setup (Windows)
+    │   ├── setup-assets.sh        # Script de setup (Linux/macOS)
+    │   ├── generate-patterns.ps1  # Generador de patrones (Windows)
+    │   ├── generate-patterns.sh   # Generador de patrones (Linux/macOS)
+    │   └── README.md              # Documentación técnica
     │
-    └── source/
-        ├── WallpaperGemini.png         # Wallpaper base
-        ├── Astronauta.png              # Sticker
-        ├── Luna.png                    # Sticker
-        ├── Nave.png                    # Sticker
-        ├── Galaxia.png                 # Sticker
+    ├── sources/                   # Stickers para generar patrones
+    │   ├── Astronauta.png         # Sticker
+    │   ├── Luna.png               # Sticker
+    │   ├── Nave.png               # Sticker
+    │   └── Galaxia.png            # Sticker
+    │
+    └── generated/                 # Patrones generados
+        ├── WallpaperGemini.png    # Wallpaper base
         ├── Patron_Espacio_Peque.png    # Patrón generado
         └── Patron_Espacio_Mediano.png  # Patrón generado
 ```

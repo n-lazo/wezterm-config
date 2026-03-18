@@ -134,16 +134,42 @@ if ($missing -gt 0) {
 # RESUMEN FINAL
 # ============================================================================
 
+# ============================================================================
+# COPIAR WEZTERM.LUA
+# ============================================================================
+
+Write-Host ""
+Write-Host "Copiando configuración de WezTerm..." -ForegroundColor Cyan
+
+$weztermConfigPath = Join-Path (Split-Path $scriptRoot -Parent) "wezterm.lua"
+$weztermTargetPath = Join-Path $env:USERPROFILE ".wezterm.lua"
+
+if (Test-Path $weztermConfigPath) {
+    Copy-Item -Path $weztermConfigPath -Destination $weztermTargetPath -Force
+    Write-Host "  ✓ wezterm.lua" -ForegroundColor Green
+    Write-Host "    └─ Configuración principal" -ForegroundColor Gray
+    Write-Host "✓ Configuración copiada a: $weztermTargetPath" -ForegroundColor Green
+} else {
+    Write-Host "⚠ wezterm.lua no encontrado en: $weztermConfigPath" -ForegroundColor Yellow
+    Write-Host "  Se omite su copia" -ForegroundColor Gray
+}
+
+# ============================================================================
+# RESUMEN FINAL
+# ============================================================================
+
 Write-Host ""
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
 Write-Host "✓ Setup completado exitosamente!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Próximos pasos:" -ForegroundColor Yellow
-Write-Host "  1. Copia wezterm.lua a: $env:USERPROFILE\.wezterm.lua" -ForegroundColor Gray
-Write-Host "  2. Recarga WezTerm (Ctrl+Shift+R o reinicia la app)" -ForegroundColor Gray
+Write-Host "  1. Recarga WezTerm (Ctrl+Shift+R o reinicia la app)" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Assets ubicados en:" -ForegroundColor Yellow
 Write-Host "  $assetTargetDir" -ForegroundColor Gray
+Write-Host ""
+Write-Host "Config ubicada en:" -ForegroundColor Yellow
+Write-Host "  $weztermTargetPath" -ForegroundColor Gray
 Write-Host ""
 
 if (-not $GeneratePatterns) {
