@@ -1,0 +1,39 @@
+# .gitignore for WezTerm Config
+
+# Generated files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporal/cache
+temp/
+.cache/
+*.tmp
+
+# Local overrides (si quieres config local sin versionar)
+wezterm.local.lua
+local-config/
+
+# Node/npm (si usas herramientas JS)
+node_modules/
+package-lock.json
+
+# Python (si usas herramientas Python)
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Git LFS (pointer files cache)
+.git/objects/pack/
+
+# Build artifacts
+/dist/
+/build/
