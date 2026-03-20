@@ -2,8 +2,8 @@
 
 ################################################################################
 # GENERADOR DE PATRONES PARALLAX PARA WEZTERM
-# Genera los patrones a partir de los stickers en assets/sources.
-# Uso: ./generate-patterns.sh [ASSET_DIR] [OUTPUT_DIR]
+# Verifica el entorno y genera los patrones parallax.
+# Uso: ./generate-parallax.sh [ASSET_DIR] [OUTPUT_DIR]
 ################################################################################
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,24 +16,22 @@ CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
 NC='\033[0m'
 
-test_imagemagick() {
-    if command -v magick &> /dev/null; then
-        echo -e "${GREEN}✓ ImageMagick encontrado${NC}"
-        return 0
-    else
-        echo -e "${RED}✗ ImageMagick no encontrado. Instálalo desde: https://imagemagick.org/${NC}"
+test_environment() {
+    if ! command -v magick &> /dev/null; then
+        echo -e "${RED}✗ Error: ImageMagick no encontrado.${NC}"
+        echo "  Consulta SETUP.md para instrucciones de instalación."
         return 1
     fi
-}
 
-test_required_stickers() {
     local required=("Astronauta.png" "Luna.png" "Nave.png" "Galaxia.png")
     for sticker in "${required[@]}"; do
         if [ ! -f "$ASSET_DIR/$sticker" ]; then
-            echo -e "${RED}✗ Sticker faltante en $ASSET_DIR: $sticker${NC}"
+            echo -e "${RED}✗ Error: Falta $sticker en $ASSET_DIR${NC}"
             return 1
         fi
     done
+
+    mkdir -p "$OUTPUT_DIR"
     return 0
 }
 
@@ -45,7 +43,6 @@ generate_pattern() {
     local rows="${5:-4}"
     
     echo -e "Generando: $filename ($cols x $rows)..."
-    
     local output_path="$OUTPUT_DIR/$filename"
     local canvas_width=2000
     local canvas_height=4000
@@ -61,12 +58,10 @@ generate_pattern() {
     for ((r = 0; r < rows; r++)); do
         for ((c = 0; c < cols; c++)); do
             local chosen="${stickers[$((RANDOM % ${#stickers[@]}))]}"
-            local sticker_path="$ASSET_DIR/$chosen"
             local final_w=$((RANDOM % (max_size - min_size) + min_size))
             
             local base_x=$((c * cell_w))
             local base_y=$((r * cell_h))
-            
             [ $((c % 2)) -ne 0 ] && base_y=$((base_y + cell_h / 2))
             
             local max_x=$((cell_w - final_w - safety_margin))
@@ -74,10 +69,10 @@ generate_pattern() {
             [ $max_x -lt 1 ] && max_x=1
             [ $max_y -lt 1 ] && max_y=1
             
-            local jitter_x=$((RANDOM % max_x + safety_margin))
-            local jitter_y=$((RANDOM % max_y + safety_margin))
+            local final_x=$((base_x + RANDOM % max_x + safety_margin))
+            local final_y=$((base_y + RANDOM % max_y + safety_margin))
             
-            magick "$output_path" "$sticker_path[x$final_w]" -geometry "+$((base_x + jitter_x))+$((base_y + jitter_y))" -colorspace sRGB -composite "$output_path"
+            magick "$output_path" "$ASSET_DIR/$chosen[x$final_w]" -geometry "+$final_x+$final_y" -colorspace sRGB -composite "$output_path"
         done
     done
     
@@ -87,11 +82,9 @@ generate_pattern() {
 
 echo -e "\n${MAGENTA}-- Generador de Patrones Parallax --${NC}"
 
-test_imagemagick || exit 1
-test_required_stickers || exit 1
-mkdir -p "$OUTPUT_DIR"
+if ! test_environment; then exit 1; fi
 
 generate_pattern "Patron_Espacio_Peque.png" 100 150 3 4
 generate_pattern "Patron_Espacio_Mediano.png" 200 300 3 3
 
-echo -e "${GREEN}¡Completado!${NC}\n"
+echo -e "\n${GREEN}✓ ¡Patrones generados exitosamente! Recarga WezTerm (Ctrl+Shift+R)${NC}\n"

@@ -26,8 +26,8 @@ Una configuración moderna y versatil de **WezTerm** con tema visual "Gemini", r
 # 1. Clonar el repositorio directamente al directorio de config de WezTerm
 git clone https://github.com/n-lazo/wezterm-config.git $env:USERPROFILE\.config\wezterm
 
-# 2. (Opcional) Verificar WezTerm e instalar dependencias
-$env:USERPROFILE\.config\wezterm\assets\generators\setup-assets.ps1 -InstallDeps
+# 2. (Opcional) Instalar dependencias para assets
+$env:USERPROFILE\.config\wezterm\assets\generators\install-deps.ps1
 
 # 3. Recarga WezTerm (Ctrl+Shift+R)
 ```
@@ -38,10 +38,10 @@ $env:USERPROFILE\.config\wezterm\assets\generators\setup-assets.ps1 -InstallDeps
 # 1. Clonar el repositorio directamente al directorio de config de WezTerm
 git clone https://github.com/n-lazo/wezterm-config.git ~/.config/wezterm
 
-# 2. (Opcional) Verificar WezTerm
+# 2. (Opcional) Consultar instalación de dependencias
 chmod +x ~/.config/wezterm/assets/generators/*.sh
-~/.config/wezterm/assets/generators/setup-assets.sh
-
+~/.config/wezterm/assets/generators/install-deps.sh
+```
 # 3. Recarga WezTerm
 ```
 
@@ -67,10 +67,10 @@ wezterm-config/
 │
 └── assets/
     ├── generators/
-    │   ├── setup-assets.ps1       # Script de setup (Windows)
-    │   ├── setup-assets.sh        # Script de setup (Linux/macOS)
-    │   ├── generate-patterns.ps1  # Generador de patrones (Windows)
-    │   ├── generate-patterns.sh   # Generador de patrones (Linux/macOS)
+    │   ├── install-deps.ps1       # Instalador de dependencias (Windows)
+    │   ├── install-deps.sh        # Instalador de dependencias (Linux/macOS)
+    │   ├── generate-parallax.ps1  # Generador de patrones (Windows)
+    │   ├── generate-parallax.sh   # Generador de patrones (Linux/macOS)
     │   └── README.md              # Documentación técnica
     │
     ├── sources/                   # Stickers para generar patrones
@@ -124,18 +124,18 @@ Si quieres regenerar los patrones con diferentes parámetros:
 ```powershell
 # Windows
 cd assets/generators
-.\setup-assets.ps1 -GeneratePatterns
+.\generate-parallax.ps1
 ```
 
 ```bash
 # Linux / macOS
 cd assets/generators
-./setup-assets.sh --generate-patterns
+./generate-parallax.sh
 ```
 
-Para mayor control, puedes usar el generador directamente:
+Para mayor control, puedes pasar parámetros:
 ```powershell
-.\generate-patterns.ps1 -AssetDir "..\sources" -OutputDir "..\generated"
+.\generate-parallax.ps1 -AssetDir "..\sources" -OutputDir "..\generated"
 ```
 
 ## 💾 Git LFS
