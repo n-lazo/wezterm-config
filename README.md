@@ -29,7 +29,10 @@ git clone https://github.com/n-lazo/wezterm-config.git $env:USERPROFILE\.config\
 # 2. (Opcional) Instalar dependencias para assets
 $env:USERPROFILE\.config\wezterm\assets\generators\install-deps.ps1
 
-# 3. Recarga WezTerm (Ctrl+Shift+R)
+# 3. (Opcional) Configurar Shell (Oh My Posh)
+$env:USERPROFILE\.config\wezterm\assets\generators\setup-shell.ps1
+
+# 4. Recarga WezTerm (Ctrl+Shift+R)
 ```
 
 ### Para Linux / macOS (Bash)
@@ -68,6 +71,7 @@ wezterm-config/
     ├── generators/
     │   ├── install-deps.ps1       # Instalador de dependencias (Windows)
     │   ├── install-deps.sh        # Instalador de dependencias (Linux/macOS)
+    │   ├── setup-shell.ps1        # Configura Oh My Posh (Windows)
     │   ├── generate-parallax.ps1  # Generador de patrones (Windows)
     │   ├── generate-parallax.sh   # Generador de patrones (Linux/macOS)
     │   └── README.md              # Documentación técnica de assets

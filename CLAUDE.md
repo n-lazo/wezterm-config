@@ -32,7 +32,7 @@ Three optional image layers stack on top of a solid base color (`#0f1124`):
 ### Asset Generators
 
 Scripts in `assets/generators/` regenerate the PNG patterns using ImageMagick:
-- **Windows**: `generate-parallax.ps1`, `install-deps.ps1`
+- **Windows**: `generate-parallax.ps1`, `install-deps.ps1`, `setup-shell.ps1`
 - **Linux/macOS**: `generate-parallax.sh`, `install-deps.sh`
 
 Source sticker PNGs live in `assets/sources/`. Generated PNGs are tracked via Git LFS.
