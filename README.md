@@ -122,12 +122,20 @@ end
 Si quieres regenerar los patrones con diferentes parámetros:
 
 ```powershell
-# Setup y regenerar en un solo paso
+# Windows
 cd assets/generators
 .\setup-assets.ps1 -GeneratePatterns
+```
 
-# O ejecutar el generador directamente
-.\generate-patterns.ps1 -AssetDir "$env:USERPROFILE\.wezterm_assets"
+```bash
+# Linux / macOS
+cd assets/generators
+./setup-assets.sh --generate-patterns
+```
+
+Para mayor control, puedes usar el generador directamente:
+```powershell
+.\generate-patterns.ps1 -AssetDir "..\sources" -OutputDir "..\generated"
 ```
 
 ## 💾 Git LFS
