@@ -23,12 +23,11 @@ Una configuración moderna y versatil de **WezTerm** con tema visual "Gemini", r
 ### Para Windows (PowerShell)
 
 ```powershell
-# 1. Clonar el repositorio
-git clone https://github.com/n-lazo/wezterm-config.git
-cd wezterm-config
+# 1. Clonar el repositorio directamente al directorio de config de WezTerm
+git clone https://github.com/n-lazo/wezterm-config.git $env:USERPROFILE\.config\wezterm
 
-# 2. Setup automático (copia assets y config)
-.\assets\generators\setup-assets.ps1
+# 2. (Opcional) Verificar WezTerm e instalar dependencias
+$env:USERPROFILE\.config\wezterm\assets\generators\setup-assets.ps1 -InstallDeps
 
 # 3. Recarga WezTerm (Ctrl+Shift+R)
 ```
@@ -36,26 +35,20 @@ cd wezterm-config
 ### Para Linux / macOS (Bash)
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/n-lazo/wezterm-config.git
-cd wezterm-config
+# 1. Clonar el repositorio directamente al directorio de config de WezTerm
+git clone https://github.com/n-lazo/wezterm-config.git ~/.config/wezterm
 
-# 2. Hacer ejecutables los scripts
-chmod +x assets/generators/*.sh
+# 2. (Opcional) Verificar WezTerm
+chmod +x ~/.config/wezterm/assets/generators/*.sh
+~/.config/wezterm/assets/generators/setup-assets.sh
 
-# 3. Setup automático (copia assets y config)
-./assets/generators/setup-assets.sh
-
-# 4. Recarga WezTerm
+# 3. Recarga WezTerm
 ```
 
-### 📍 Archivos instalados
+### 📍 Sin pasos de copia
 
-Ambos scripts copian automáticamente:
-- Assets a: `~/.wezterm_assets/` (6.75 MB)
-- Config a: `~/.wezterm.lua`
-
-Luego simplemente recarga WezTerm (Ctrl+Shift+R)
+El repositorio **es** el directorio de config de WezTerm — no se copian archivos.
+WezTerm carga `wezterm.lua` y los assets directamente desde el repo.
 
 ```
 Ctrl+Shift+R  # Reload config
@@ -94,13 +87,13 @@ wezterm-config/
 
 ## 🎯 Configuración Destacada
 
-### Rutas Dinámicas
+### Rutas de Assets Relativas al Repo
 
-La configuración detecta automáticamente el home del usuario:
+Los assets se referencian relativos al directorio de config, sin rutas hardcodeadas:
 
 ```lua
-local function get_home_dir()
-    return os.getenv("USERPROFILE") or os.getenv("HOME") or wezterm.home_dir
+local function asset_path(filename)
+    return wezterm.config_dir .. "/assets/generated/" .. filename
 end
 ```
 
@@ -186,9 +179,10 @@ config.font_size = 14.0
 
 ### "Asset not found" en logs
 
-Los assets no se copiaron. Ejecuta:
-```powershell
-.\assets\generators\setup-assets.ps1
+El repo no fue clonado con Git LFS. Ejecuta:
+```bash
+git lfs install
+git lfs pull
 ```
 
 ### Las imágenes no cargan después de clonar

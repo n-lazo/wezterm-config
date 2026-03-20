@@ -14,8 +14,7 @@ end
 --- @param filename string Nombre del archivo de asset
 --- @return string Ruta completa al asset
 local function asset_path(filename)
-	local home = get_home_dir()
-	return home .. "\\.wezterm_assets\\" .. filename
+	return wezterm.config_dir .. "/assets/generated/" .. filename
 end
 
 --- Valida que un archivo de asset exista
