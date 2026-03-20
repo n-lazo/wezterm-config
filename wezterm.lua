@@ -73,7 +73,15 @@ config.default_prog = { "pwsh.exe", "-NoLogo" }
 config.default_cwd = get_home_dir()
 
 -- ============================================================================
--- 4. SCROLL Y COMPORTAMIENTO
+-- 4. VENTANA MAXIMIZADA AL INICIO
+-- ============================================================================
+wezterm.on("gui-startup", function(cmd)
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():maximize()
+end)
+
+-- ============================================================================
+-- 5. SCROLL Y COMPORTAMIENTO
 -- ============================================================================
 config.scrollback_lines = 10000
 config.enable_scroll_bar = true
@@ -81,12 +89,12 @@ config.alternate_buffer_wheel_scroll_speed = 1
 config.hide_mouse_cursor_when_typing = true
 
 -- ============================================================================
--- 5. RENDIMIENTO Y APARIENCIA AVANZADA
+-- 6. RENDIMIENTO Y APARIENCIA AVANZADA
 -- ============================================================================
 config.front_end = "WebGpu"
 
 -- ============================================================================
--- 6. CAPAS DE FONDO CON EFECTO PARALLAX Y VALIDACIÓN
+-- 7. CAPAS DE FONDO CON EFECTO PARALLAX Y VALIDACIÓN
 -- ============================================================================
 config.background = {}
 
@@ -134,7 +142,7 @@ if #config.background == 0 then
 end
 
 -- ============================================================================
--- 7. ESQUEMA DE COLORES (Tema Gemini)
+-- 8. ESQUEMA DE COLORES (Tema Gemini)
 -- ============================================================================
 config.colors = {
 	background = "#0f1124",
