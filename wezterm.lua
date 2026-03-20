@@ -90,6 +90,13 @@ config.front_end = "WebGpu"
 -- ============================================================================
 config.background = {}
 
+-- CAPA BASE: Color sólido de fondo (requerido cuando se usan capas)
+table.insert(config.background, {
+	source = { Color = "#0f1124" },
+	width = "100%",
+	height = "100%",
+})
+
 -- CAPA 1: Wallpaper Gemini (Fondo base casi estático)
 local layer1 = build_background_layer("WallpaperGemini.png", {
 	opacity = 0.02,

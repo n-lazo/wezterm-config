@@ -8,14 +8,20 @@
     - Opcionalmente regenera los patrones si deseas cambiar stickers
 .PARAMETER GeneratePatterns
     Si se especifica, regenera los patrones antes de copiar
+.PARAMETER InstallDeps
+    Si se especifica, instala WezTerm e ImageMagick automáticamente con winget si no están presentes
 .EXAMPLE
     .\setup-assets.ps1
-    .\setup-assets.ps1 -GeneratePatterns
+    .\setup-assets.ps1 -InstallDeps
+    .\setup-assets.ps1 -GeneratePatterns -InstallDeps
 #>
 
 param(
     [Parameter(Mandatory=$false)]
-    [switch]$GeneratePatterns = $false
+    [switch]$GeneratePatterns = $false,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$InstallDeps = $false
 )
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -27,6 +33,29 @@ Write-Host ""
 Write-Host "╔════════════════════════════════════════════════════════════════╗" -ForegroundColor Magenta
 Write-Host "║           SETUP DE ASSETS PARA WEZTERM                        ║" -ForegroundColor Magenta
 Write-Host "╚════════════════════════════════════════════════════════════════╝" -ForegroundColor Magenta
+Write-Host ""
+
+# ============================================================================
+# INSTALAR WEZTERM
+# ============================================================================
+
+Write-Host "Verificando WezTerm..." -ForegroundColor Cyan
+
+$weztermInstalled = Get-Command wezterm -ErrorAction SilentlyContinue
+if ($weztermInstalled) {
+    Write-Host "✓ WezTerm ya está instalado" -ForegroundColor Green
+} elseif ($InstallDeps) {
+    Write-Host "Instalando WezTerm con winget..." -ForegroundColor Yellow
+    winget install --id wez.wezterm --accept-package-agreements --accept-source-agreements
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "✗ Error instalando WezTerm" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "✓ WezTerm instalado correctamente" -ForegroundColor Green
+} else {
+    Write-Host "⚠ WezTerm no encontrado. Usa -InstallDeps para instalarlo automáticamente." -ForegroundColor Yellow
+}
+
 Write-Host ""
 
 # ============================================================================
@@ -64,7 +93,7 @@ if ($GeneratePatterns) {
     
     $generateScript = Join-Path $scriptRoot "generate-patterns.ps1"
     if (Test-Path $generateScript) {
-        & $generateScript -AssetDir $assetSourcesDir -OutputDir $assetGeneratedDir
+        & $generateScript -AssetDir $assetSourcesDir -OutputDir $assetGeneratedDir -InstallDeps:$InstallDeps
         if ($LASTEXITCODE -ne 0) {
             Write-Host "✗ Error en la generación de patrones" -ForegroundColor Red
             exit 1
@@ -141,7 +170,7 @@ if ($missing -gt 0) {
 Write-Host ""
 Write-Host "Copiando configuración de WezTerm..." -ForegroundColor Cyan
 
-$weztermConfigPath = Join-Path (Split-Path $scriptRoot -Parent) "wezterm.lua"
+$weztermConfigPath = Join-Path (Split-Path (Split-Path $scriptRoot -Parent) -Parent) "wezterm.lua"
 $weztermTargetPath = Join-Path $env:USERPROFILE ".wezterm.lua"
 
 if (Test-Path $weztermConfigPath) {

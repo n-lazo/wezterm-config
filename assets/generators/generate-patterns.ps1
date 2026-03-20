@@ -17,7 +17,10 @@ param(
     [string]$AssetDir = "$env:USERPROFILE\.wezterm_assets",
 
     [Parameter(Mandatory=$false)]
-    [string]$OutputDir = $null
+    [string]$OutputDir = $null,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$InstallDeps = $false
 )
 
 # Si no se especifica OutputDir, usa el mismo AssetDir (para backward compatibility)
@@ -35,8 +38,18 @@ function Test-ImageMagick {
             return $true
         }
     } catch {}
-    
-    Write-Host "✗ ImageMagick no encontrado. Instálalo desde: https://imagemagick.org/" -ForegroundColor Red
+
+    if ($InstallDeps) {
+        Write-Host "ImageMagick no encontrado. Instalando con winget..." -ForegroundColor Yellow
+        winget install --id ImageMagick.ImageMagick --accept-package-agreements --accept-source-agreements
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "✗ Error instalando ImageMagick" -ForegroundColor Red
+            return $false
+        }
+        Write-Host "✓ ImageMagick instalado. Reinicia la terminal y vuelve a ejecutar el script." -ForegroundColor Green
+    } else {
+        Write-Host "✗ ImageMagick no encontrado. Usa -InstallDeps para instalarlo automáticamente." -ForegroundColor Red
+    }
     return $false
 }
 
