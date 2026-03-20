@@ -7,8 +7,10 @@ Este directorio contiene los assets visuales para WezTerm y los scripts para ges
 ```
 assets/
 ├── generators/
-│   ├── setup-assets.ps1       # Script de mantenimiento y validación
-│   └── generate-patterns.ps1  # Generador de patrones parallax
+│   ├── install-deps.ps1       # Instalador de dependencias (Windows)
+│   ├── install-deps.sh        # Instalador de dependencias (Linux/macOS)
+│   ├── generate-parallax.ps1  # Generador de patrones (Windows)
+│   └── generate-parallax.sh   # Generador de patrones (Linux/macOS)
 │
 ├── sources/                   # Stickers de entrada (para generar patrones)
 │   ├── Astronauta.png
@@ -38,27 +40,18 @@ Los assets se cargan directamente desde `assets/generated/` usando `wezterm.conf
 
 ## 🔧 Scripts de Gestión
 
-### setup-assets.ps1 / setup-assets.sh
+### install-deps.ps1 / install-deps.sh
 
-**Propósito**: Verificar que el entorno sea correcto (WezTerm instalado, assets descargados vía Git LFS) y opcionalmente regenerar patrones.
+**Propósito**: Instalar las dependencias necesarias (ImageMagick, WezTerm) para el funcionamiento de los generadores.
 
-**Uso**:
-```powershell
-.\setup-assets.ps1 -GeneratePatterns
-```
+### generate-parallax.ps1 / generate-parallax.sh
 
-### generate-patterns.ps1 / generate-patterns.sh
-
-**Propósito**: Generar los patrones parallax a partir de los stickers en `sources/`.
+**Propósito**: Verificar el entorno y generar los patrones parallax a partir de los stickers en `sources/`.
 
 **Uso**:
 ```powershell
-.\generate-patterns.ps1
+.\generate-parallax.ps1
 ```
-
-**Parámetros**:
-- `-AssetDir`: Directorio de stickers (default: `..\sources`)
-- `-OutputDir`: Directorio de salida (default: `..\generated`)
 
 ## 📦 Git LFS
 

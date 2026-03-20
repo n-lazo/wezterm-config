@@ -22,8 +22,6 @@ local function asset_path(filename)
 end
 ```
 
-Each background layer is validated at startup with `validate_asset()` — missing assets are logged and skipped rather than crashing.
-
 ### Background Layers (Parallax)
 
 Three optional image layers stack on top of a solid base color (`#0f1124`):
@@ -34,8 +32,8 @@ Three optional image layers stack on top of a solid base color (`#0f1124`):
 ### Asset Generators
 
 Scripts in `assets/generators/` regenerate the PNG patterns using ImageMagick:
-- **Windows**: `setup-assets.ps1`, `generate-patterns.ps1`
-- **Linux/macOS**: `setup-assets.sh`, `generate-patterns.sh`
+- **Windows**: `generate-parallax.ps1`, `install-deps.ps1`
+- **Linux/macOS**: `generate-parallax.sh`, `install-deps.sh`
 
 Source sticker PNGs live in `assets/sources/`. Generated PNGs are tracked via Git LFS.
 
@@ -48,13 +46,13 @@ WezTerm hot-reloads on file save. To force reload: `Ctrl+Shift+R`
 ```powershell
 # Windows
 cd assets/generators
-.\setup-assets.ps1 -GeneratePatterns
+.\generate-parallax.ps1
 ```
 
 ```bash
 # Linux/macOS
 cd assets/generators
-./setup-assets.sh --generate-patterns
+./generate-parallax.sh
 ```
 
 ## Git LFS

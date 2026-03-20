@@ -9,7 +9,7 @@ Una configuración moderna y versatil de **WezTerm** con tema visual "Gemini", r
 - ✅ **Efecto Parallax** - 3 capas de fondo con scroll parallax
 - ✅ **Tema Gemini** - Colores cuidadosamente diseñados
 - ✅ **Git LFS** - Gestión eficiente de imágenes PNG
-- ✅ **Scripts modulares** - Generador y setup de assets
+- ✅ **Scripts modulares** - Generador e instalador de dependencias
 
 ## 📋 Requerimientos
 
@@ -41,7 +41,7 @@ git clone https://github.com/n-lazo/wezterm-config.git ~/.config/wezterm
 # 2. (Opcional) Consultar instalación de dependencias
 chmod +x ~/.config/wezterm/assets/generators/*.sh
 ~/.config/wezterm/assets/generators/install-deps.sh
-```
+
 # 3. Recarga WezTerm
 ```
 
@@ -61,8 +61,7 @@ wezterm-config/
 ├── .gitattributes                 # Configuración de Git LFS
 ├── .gitignore                     # Archivos a ignorar
 ├── README.md                      # Este archivo
-├── SETUP.md                       # Guía detallada de instalación
-├── MULTIPLATFORM.md               # Soporte Windows/Linux/macOS
+├── CLAUDE.md                      # Guía para agentes IA
 ├── wezterm.lua                    # Configuración principal
 │
 └── assets/
@@ -71,7 +70,7 @@ wezterm-config/
     │   ├── install-deps.sh        # Instalador de dependencias (Linux/macOS)
     │   ├── generate-parallax.ps1  # Generador de patrones (Windows)
     │   ├── generate-parallax.sh   # Generador de patrones (Linux/macOS)
-    │   └── README.md              # Documentación técnica
+    │   └── README.md              # Documentación técnica de assets
     │
     ├── sources/                   # Stickers para generar patrones
     │   ├── Astronauta.png         # Sticker
@@ -79,10 +78,10 @@ wezterm-config/
     │   ├── Nave.png               # Sticker
     │   └── Galaxia.png            # Sticker
     │
-    └── generated/                 # Patrones generados
+    └── generated/                 # Patrones generados (usados en la config)
         ├── WallpaperGemini.png    # Wallpaper base
-        ├── Patron_Espacio_Peque.png    # Patrón generado
-        └── Patron_Espacio_Mediano.png  # Patrón generado
+        ├── Patron_Espacio_Peque.png    # Patrón generado (fondo lejano)
+        └── Patron_Espacio_Mediano.png  # Patrón generado (fondo cercano)
 ```
 
 ## 🎯 Configuración Destacada
@@ -150,9 +149,9 @@ El repositorio usa Git LFS para las imágenes PNG. Esto permite:
 ### Primer clone con Git LFS
 
 ```bash
-# Si Git LFS no está instalado en el repo
+# Si Git LFS no está instalado en el sistema
 git lfs install
-git clone <tu-repo>
+git clone https://github.com/n-lazo/wezterm-config.git ~/.config/wezterm
 ```
 
 ## 🎨 Personalización
@@ -203,9 +202,7 @@ git lfs pull
 
 ### ImageMagick no encontrado
 
-Instala desde: https://imagemagick.org/
-
-En Windows, asegúrate de agregar a PATH durante instalación.
+Instala desde: https://imagemagick.org/ o usa el script `install-deps`.
 
 ### Los patrones parallax no se regeneran
 
@@ -216,7 +213,6 @@ magick --version
 
 ## 📚 Documentación Adicional
 
-- [SETUP.md](./SETUP.md) - Guía detallada de instalación paso a paso
 - [assets/README.md](./assets/README.md) - Documentación técnica de assets y generadores
 
 ## 🤝 Contribuciones
